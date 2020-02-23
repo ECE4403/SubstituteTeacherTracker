@@ -1,18 +1,23 @@
-
+/**
+ * 
+ * @author Ian Crossley
+ * @author Ryan Marino
+ * 
+ * This class represents a single simple date.
+ * 
+ */
 public class Date {
 
 	private int year;
 	private int month;
 	private int day;
-	private int hour;
-	private int minute;
+	private String time;
 	
-	public Date(int yearIn, int monthIn, int dayIn, int hourIn, int minuteIn) {
+	public Date(int yearIn, int monthIn, int dayIn, String timeIn) {
 		year = yearIn;
 		month = monthIn;
 		day = dayIn;
-		hour = hourIn;
-		minute = minuteIn;
+		time = timeIn;
 	}
 	
 	public int getYear() {
@@ -27,16 +32,12 @@ public class Date {
 		return day;
 	}
 	
-	public int getHour() {
-		return hour;
-	}
-	
-	public int getMinute() {
-		return minute;
+	public String getTime() {
+		return time;
 	}
 	
 	public String getDate() {
-		return Integer.toString(year) + ":" + Integer.toString(month) + ":" + Integer.toString(day) + ":" + Integer.toString(hour) + ":" + Integer.toString(minute);
+		return Integer.toString(year) + ":" + Integer.toString(month) + ":" + Integer.toString(day) + ":" + time;
 	}
 	
 	

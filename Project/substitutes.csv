@@ -1,4 +1,5 @@
-﻿Substitute Teacher
-Mrs. X
-Mr. Y
-Mrs. Z
+name,teachables,blacklist
+Sean Baker,"science
+social studies",FHS
+Laura Quinn,"math
+science",

@@ -1,5 +1,15 @@
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Ian Crossley
+ * @author Ryan Marino
+ * 
+ * This class represents a generic teacher.
+ * It contains simple fields, such as name and teachables.
+ * 
+ */
+
 public class Teacher {
 
 	public String name;
@@ -17,6 +27,8 @@ public class Teacher {
 	public ArrayList<String> getTeachables(){
 		return teachables;
 	}
+	
+	
 	
 	// Helper method to convert string (of teachables, for example) into an arraylist of strings:
 		public ArrayList<String> parseString(String stringIn){

@@ -2,70 +2,98 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.commons.csv.*;
 
+/**
+ * 
+ * @author Ian Crossley
+ * @author Ryan Marino
+ * 
+ * This top-level program reads a .csv list of teacher absences (absences.csv)
+ * and a .csv list of substitute teachers (substitutes.csv). It then assigns a
+ * substitute teacher to each absence, and generates a .csv list of assignments
+ * (assignments.csv)
+ * 
+ */
+
+// Note: many lines are currently commented out - these were written before we knew the input .csv file formats.
+// I have kept them simply to remind us where additional functionality may be added
 public class Driver {
 
 	public static void main(String[] args) throws Exception {
 		
-
+		Sorter sorter = new Sorter(); // Sorter object can perform various useful functions
 		
-		// Read input files:
+		ArrayList<TimeSlot> timeSlotList = new ArrayList<TimeSlot>();       // Array list of all timeSlots
+		ArrayList<SubTeacher> subTeacherList = new ArrayList<SubTeacher>(); // Array list of all subTeachers
+		// Note: No absentTeacherList is needed - absent teachers are stored as fields in timeSlot objects
 		
-CSVParser csvParser = new CSVParser(new FileReader("absences.csv"), CSVFormat.EXCEL.withFirstRecordAsHeader());
+        // Read absences.csv (each row contains one absence that must be filled):
+		CSVParser csvParser = new CSVParser(new FileReader("absences.csv"), CSVFormat.EXCEL.withFirstRecordAsHeader());
 		
-		// After constructed, we can loop through each row of the CSV file using a for-each loop
-		// We access the data in each column using the corresponding column label
 		for (CSVRecord record : csvParser) {
-			String teacher = record.get("teacher");
-			String date = record.get("date");
-			String time = record.get("time");
-			String school = record.get("school");
 			
-			System.out.println("CSV Record: " + teacher + " | " + date + " | " + time + " | " + school);
-
+			String date = record.get("date");
+			String time = record.get("period");
+			String name = record.get("teacher");
+			String teachables = record.get("teachables");
+			//String preferredSubs = record.get("preferredSubs");
+			String school = record.get("location");
+			
+			// Add the new time slot to timeSlotList:
+			timeSlotList.add(new TimeSlot(sorter.parseDate(date, time), new AbsentTeacher(name, teachables, school)));
+		
 		}
-				
-		// Remember to close all input and output streams when you are done processing them
+		
 		csvParser.close();
-				
-				
-			// Read absences.csv (each row is one absence that must be filled)
-			// Read substitutes.csv (each row is one available substitute teacher)
 		
-		// For each absence, add a timeSlot object to the timeSlots arrayList:
+		System.out.println("Number of absences: " + timeSlotList.size());
 		
-		// For each substitute teacher, add a subTeacher object to the subTeachers arrayList:
+		// Read substitutes.csv (each row contains one available substitute teacher):
+        CSVParser subParser = new CSVParser(new FileReader("substitutes.csv"), CSVFormat.EXCEL.withFirstRecordAsHeader());
+		
+		for (CSVRecord record : subParser) {
+			
+			String name = record.get("name");
+			String teachables = record.get("teachables");
+			String blacklist = record.get("blacklist");
+			//String unavailabilities = record.get("unavailabilities");
+			//String onCalls = record.get("onCalls");
+			//String bookings = "bookings";
+			
+			subTeacherList.add(new SubTeacher(name, teachables, blacklist)); // Add teacher to array list
+			
+		}
+		subParser.close();
+		
+		System.out.println("Number of substitutes: " + subTeacherList.size());
 		
 		// For each timeSlot, identify a viable subTeacher and assign it to that timeSlot:
-		//for(int i = 0; i < subTeachers.size(); i++) {
-		//	assignRandomly(); // This will change when we're ready to assign subs based on preference, teachability, etc.
-		//}
-		
-		
-		
-		
-		
-		
-		
-		
-		// Write to output files:
-		    // Write assignments.csv
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	}
+		for(TimeSlot ts : timeSlotList) {
+			
+			SubTeacher st; // Temp variable to store subTeacher object
 
-}
+			// Note: this is where we will put other subTeacher selecting methods, like chooseByPreferred()
+			do {
+				st = sorter.chooseRandomly(subTeacherList); // st = random subTeacher
+			} while(sorter.scheduleConflict(st, ts)); // Try again and pick a new st if the last one's bookings conflict
+			
+			ts.setSubTeacher(st); // Set subTeacher for this timeSlot 
+		}
+		
+		// Write to assignments.csv:
+
+        CSVPrinter csvPrinter = new CSVPrinter(new FileWriter("assignments.csv"), CSVFormat.EXCEL.withHeader("Absent Teacher Name", "Time Slot", "School", "Substitute Teacher Chosen"));
+        
+        // Print a line for each time slot:
+        for(TimeSlot ts : timeSlotList) {
+        	csvPrinter.printRecord(ts.getAbsentTeacher().getName(), ts.getSlotDate(), ts.getAbsentTeacher().getSchool(), ts.getSubTeacher().getName());
+        }
+		
+		csvPrinter.close();
+		
+	} // End of main()
+	
+} // End of Driver.java

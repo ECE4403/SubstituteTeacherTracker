@@ -1,3 +1,6 @@
-teacher,date,time,school
-John Doe,321-7654,john.doe@unb.ca,a
-Jane Smith,987-6543,jane.smith@unb.ca,b
+date,period,teacher,location,teachables
+"Monday, January 6",AM,Jane Smith,FHS,"math
+science"
+"Wednesday, January 8",PM,John Doe,Leo Hayes,"english
+social studies"
+"Fridya, January 10",AM,Mr. X,FHS,science
