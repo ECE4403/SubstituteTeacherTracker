@@ -50,7 +50,7 @@ public class Driver {
 		
 		csvParser.close();
 		
-		System.out.println("Number of absences: " + timeSlotList.size());
+		//System.out.println("Number of absences: " + timeSlotList.size());
 			
 		
 		// Read substitutes.csv (each row contains one available substitute teacher):
@@ -61,10 +61,9 @@ public class Driver {
 			String name = record.get("name");
 			String teachables = record.get("teachables");
 			String blacklist = record.get("blacklist");
-			ArrayList<String> unavailabilities = new ArrayList<String>();
+			ArrayList<String> unavailabilities = new ArrayList<String>(); //1 unavailabilities list per subParser record
 			
-			
-			
+
 			for(CSVRecord record2: unavailParser) { //search for name match
 				String date = record2.get("date");
 				String time = record2.get("period");
@@ -86,7 +85,7 @@ public class Driver {
 		}
 		subParser.close();
 		
-		System.out.println("Number of substitutes: " + subTeacherList.size());
+		//System.out.println("Number of substitutes: " + subTeacherList.size());
 		
 		
 		// For each timeSlot, identify a viable subTeacher and assign it to that timeSlot:
