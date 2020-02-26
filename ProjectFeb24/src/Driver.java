@@ -50,7 +50,7 @@ public class Driver {
 		
 		csvParser.close();
 		
-		//System.out.println("Number of absences: " + timeSlotList.size());
+		System.out.println("Number of absences: " + timeSlotList.size());
 			
 		
 		// Read substitutes.csv (each row contains one available substitute teacher):
@@ -96,7 +96,7 @@ public class Driver {
 			// Note: this is where we will put other subTeacher selecting methods, like chooseByPreferred()
 			do {
 				st = sorter.chooseRandomly(subTeacherList); // st = random subTeacher
-			} while(sorter.scheduleConflict(st, ts)); // Try again and pick a new st if the last one's bookings conflict
+			} while(sorter.scheduleConflict(st, ts)); // Try again and pick a new st if the last one's bookings conflict //This will be changed later.
 			
 			ts.setSubTeacher(st); // Set subTeacher for this timeSlot 
 		}

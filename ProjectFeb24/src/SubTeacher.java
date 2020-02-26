@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class SubTeacher extends Teacher{
 
 	private ArrayList<String> unavailabilities = new ArrayList<String>();
-	private ArrayList<Date> onCalls = new ArrayList<Date>();
+	private ArrayList<String> onCalls = new ArrayList<String>();
 	private ArrayList<String> booked = new ArrayList<String>();
 	private ArrayList<String> blacklist = new ArrayList<String>();
 	
@@ -30,7 +30,7 @@ public class SubTeacher extends Teacher{
 		return unavailabilities;
 	}
 	
-	public ArrayList<Date> getOnCalls(){
+	public ArrayList<String> getOnCalls(){
 		return onCalls;
 	}
 	

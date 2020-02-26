@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class AbsentTeacher extends Teacher{
 
-	String school;
+	private String school;
 	private ArrayList<String> preferredSubs = new ArrayList<String>();
 	
 	public AbsentTeacher(String nameIn, String teachablesIn, String schoolIn) {
