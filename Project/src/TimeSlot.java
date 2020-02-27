@@ -21,9 +21,10 @@ public class TimeSlot {
 	private String schoolName;
 	
 	// Constructor:
-	public TimeSlot(String slotDateIn, AbsentTeacher absentTeacherIn){
+	public TimeSlot(String slotDateIn, AbsentTeacher absentTeacherIn, String schoolNameIn){
 		slotDate = slotDateIn;
 		absentTeacher = absentTeacherIn;
+		schoolName = schoolNameIn;
 	}
 	
 	public String getSlotDate() {
@@ -53,20 +54,13 @@ public class TimeSlot {
 		schoolName = schoolNameIn;
 	}
 	
-	public void getTimeSlot() {
+	public void printTimeSlot() {
 		System.out.println("Time slot: " + slotDate + " | " + absentTeacher.getName() + " | " + subTeacher.getName());
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public String generateEmail() {
+		return "Hi " + subTeacher.getName() + ",\n\t" + "You are scheduled to substitute for " + absentTeacher.getName() + " on " + slotDate + " at " + schoolName + " school.\n\n Thank you" ; 
+	}
 	
 	
 	

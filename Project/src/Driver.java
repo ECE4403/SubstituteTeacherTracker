@@ -28,6 +28,7 @@ public class Driver {
 		
 		ArrayList<TimeSlot> timeSlotList = new ArrayList<TimeSlot>();       // Array list of all timeSlots
 		ArrayList<SubTeacher> subTeacherList = new ArrayList<SubTeacher>(); // Array list of all subTeachers
+		
 		// Note: No absentTeacherList is needed - absent teachers are stored as fields in timeSlot objects
 		
         // Read absences.csv (each row contains one absence that must be filled):
@@ -43,32 +44,49 @@ public class Driver {
 			String school = record.get("location");
 			
 			// Add the new time slot to timeSlotList:
-			timeSlotList.add(new TimeSlot(sorter.parseDate(date, time), new AbsentTeacher(name, teachables, school)));
+			timeSlotList.add(new TimeSlot(sorter.parseDate(date, time), new AbsentTeacher(name, teachables, school),school));
 		
 		}
 		
 		csvParser.close();
 		
 		System.out.println("Number of absences: " + timeSlotList.size());
+			
 		
 		// Read substitutes.csv (each row contains one available substitute teacher):
         CSVParser subParser = new CSVParser(new FileReader("substitutes.csv"), CSVFormat.EXCEL.withFirstRecordAsHeader());
 		
 		for (CSVRecord record : subParser) {
-			
+			CSVParser unavailParser = new CSVParser(new FileReader("unavailabilites.csv"), CSVFormat.EXCEL.withFirstRecordAsHeader());	
 			String name = record.get("name");
 			String teachables = record.get("teachables");
 			String blacklist = record.get("blacklist");
-			//String unavailabilities = record.get("unavailabilities");
+			ArrayList<String> unavailabilities = new ArrayList<String>(); //1 unavailabilities list per subParser record
+			
+
+			for(CSVRecord record2: unavailParser) { //search for name match
+				String date = record2.get("date");
+				String time = record2.get("period");
+				String substitute = record2.get("substitute");
+				
+				
+				if(name.equals(substitute)) {
+					unavailabilities.add(sorter.parseDate(date,time));
+				}			
+			} //end of unavailability for-each loop
+			
+			
 			//String onCalls = record.get("onCalls");
 			//String bookings = "bookings";
 			
-			subTeacherList.add(new SubTeacher(name, teachables, blacklist)); // Add teacher to array list
+			subTeacherList.add(new SubTeacher(name, teachables, blacklist, unavailabilities)); // Add teacher to array list
+			unavailParser.close();
 			
 		}
 		subParser.close();
 		
-		System.out.println("Number of substitutes: " + subTeacherList.size());
+		//System.out.println("Number of substitutes: " + subTeacherList.size());
+		
 		
 		// For each timeSlot, identify a viable subTeacher and assign it to that timeSlot:
 		for(TimeSlot ts : timeSlotList) {
@@ -78,18 +96,18 @@ public class Driver {
 			// Note: this is where we will put other subTeacher selecting methods, like chooseByPreferred()
 			do {
 				st = sorter.chooseRandomly(subTeacherList); // st = random subTeacher
-			} while(sorter.scheduleConflict(st, ts)); // Try again and pick a new st if the last one's bookings conflict
+			} while(sorter.scheduleConflict(st, ts)); // Try again and pick a new st if the last one's bookings conflict //This will be changed later.
 			
 			ts.setSubTeacher(st); // Set subTeacher for this timeSlot 
 		}
 		
 		// Write to assignments.csv:
 
-        CSVPrinter csvPrinter = new CSVPrinter(new FileWriter("assignments.csv"), CSVFormat.EXCEL.withHeader("Absent Teacher Name", "Time Slot", "School", "Substitute Teacher Chosen"));
+        CSVPrinter csvPrinter = new CSVPrinter(new FileWriter("assignments.csv"), CSVFormat.EXCEL.withHeader("Absent Teacher Name", "Time Slot", "School", "Substitute Teacher Chosen", "Email Message"));
         
         // Print a line for each time slot:
         for(TimeSlot ts : timeSlotList) {
-        	csvPrinter.printRecord(ts.getAbsentTeacher().getName(), ts.getSlotDate(), ts.getAbsentTeacher().getSchool(), ts.getSubTeacher().getName());
+        	csvPrinter.printRecord(ts.getAbsentTeacher().getName(), ts.getSlotDate(), ts.getAbsentTeacher().getSchool(), ts.getSubTeacher().getName(), ts.generateEmail());
         }
 		
 		csvPrinter.close();

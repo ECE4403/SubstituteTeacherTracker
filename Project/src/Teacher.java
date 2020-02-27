@@ -40,8 +40,8 @@ public class Teacher {
 		}
 		
 		// Helper method to convert string (of unavailabilities, for example) into an arraylist of dates:
-		public ArrayList<Date> parseDate(String datesIn){
-			ArrayList<Date> dates = new ArrayList<Date>();
+		public ArrayList<String> parseDate(String datesIn){
+			ArrayList<String> dates = new ArrayList<String>();
 			
 			// for each date listed in string, append it to dates arraylist:
 			

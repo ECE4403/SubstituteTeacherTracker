@@ -11,26 +11,26 @@ import java.util.ArrayList;
 
 public class SubTeacher extends Teacher{
 
-	private ArrayList<Date> unavailabilities = new ArrayList<Date>();
-	private ArrayList<Date> onCalls = new ArrayList<Date>();
+	private ArrayList<String> unavailabilities = new ArrayList<String>();
+	private ArrayList<String> onCalls = new ArrayList<String>();
 	private ArrayList<String> booked = new ArrayList<String>();
 	private ArrayList<String> blacklist = new ArrayList<String>();
 	
-	public SubTeacher(String nameIn, String teachablesIn, String blacklistIn){
+	public SubTeacher(String nameIn, String teachablesIn, String blacklistIn, ArrayList<String> unavailabilitiesIn){
 		
 		super(nameIn, teachablesIn);
 		blacklist = parseString(blacklistIn);
 		
-		//unavailabilities = parseDate(unavailabilitiesIn);
+		unavailabilities = unavailabilitiesIn; //TODO
 		//onCalls = parseDate(onCallsIn);
 		//booked = parseDate(bookedIn);
 	}
 	
-	public ArrayList<Date> getUnavailabilities(){
+	public ArrayList<String> getUnavailabilities(){
 		return unavailabilities;
 	}
 	
-	public ArrayList<Date> getOnCalls(){
+	public ArrayList<String> getOnCalls(){
 		return onCalls;
 	}
 	
@@ -42,7 +42,9 @@ public class SubTeacher extends Teacher{
 		return name;
 	}
 	
-	
+	public void addUnavailabilites(String unavailabilitiesIn) {
+		unavailabilities.add(unavailabilitiesIn);
+	}
 	
 	
 }

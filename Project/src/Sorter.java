@@ -37,6 +37,15 @@ public class Sorter {
     			flag = true; // Change flag status
     		}
     	}
+    	for(String date : st.getUnavailabilities()) {
+    		if(date.equals(ts.getSlotDate())){ // If there is a conflict:
+    			flag = true; // Change flag status
+    		}
+    		if(date.equals(st.getUnavailabilities())) {
+    			flag = true;
+    		}
+    	}
+    	
     	return flag; // false = no conflict, true = conflict
     }
 
