@@ -60,6 +60,10 @@ public class Driver {
 			CSVParser unavailParser = new CSVParser(new FileReader("unavailabilites.csv"), CSVFormat.EXCEL.withFirstRecordAsHeader());	
 			String name = record.get("name");
 			String teachables = record.get("teachables");
+			
+			System.out.println(name);
+			System.out.println(teachables);
+			
 			String blacklist = record.get("blacklist");
 			ArrayList<String> unavailabilities = new ArrayList<String>(); //1 unavailabilities list per subParser record
 			
@@ -85,6 +89,8 @@ public class Driver {
 		}
 		subParser.close();
 		
+		//System.out.println(subTeacherList.toString());
+		
 		//System.out.println("Number of substitutes: " + subTeacherList.size());
 		
 		
@@ -94,8 +100,11 @@ public class Driver {
 			SubTeacher st; // Temp variable to store subTeacher object
 
 			// Note: this is where we will put other subTeacher selecting methods, like chooseByPreferred()
+
 			do {
-				st = sorter.chooseRandomly(subTeacherList); // st = random subTeacher
+				System.out.println("");
+				System.out.println("Choosing for: " + ts.getAbsentTeacher().getName());
+				st = sorter.chooseByTeachables(subTeacherList, ts); // st = random subTeacher
 			} while(sorter.scheduleConflict(st, ts)); // Try again and pick a new st if the last one's bookings conflict //This will be changed later.
 			
 			ts.setSubTeacher(st); // Set subTeacher for this timeSlot 

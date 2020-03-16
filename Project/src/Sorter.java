@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * 
@@ -17,7 +18,6 @@ public class Sorter {
 		
 		// Configure max index values:
 		int max = stArray.size(); // max = number of subTeachers
-
 		// Choose random index number, rn, between 0 and max:
 		Random r = new Random();
 		int rn = r.nextInt(max);
@@ -25,6 +25,57 @@ public class Sorter {
 		return stArray.get(rn);
 		
 	}
+	
+	// Choose a random subTeacher from arrayList stArray:
+		public SubTeacher chooseByTeachables(ArrayList<SubTeacher> stArray, TimeSlot ts) {
+			
+			SubTeacher finalSt = stArray.get(0);
+			int lastRank = 0;
+			
+			for(SubTeacher st : stArray) { // For each sub teacher:
+				System.out.println("");
+				System.out.println("Comparing: " + st.getName());
+				int rank = 0;
+				//System.out.println(st.getTeachables());
+				
+				for(String subTeachable : st.getTeachables()) { // Consider sub's teachables:
+					
+					for(String absTeachable : ts.getAbsentTeacher().getTeachables()) { // For the absent teacher's teachable:
+						System.out.println("comparing " + subTeachable + " and " + absTeachable);
+						
+						if(subTeachable.equals(absTeachable)) {
+							System.out.println("Match!");
+							rank++;
+							System.out.println(rank);
+						}
+						
+					} 
+					
+				}
+				if(rank > lastRank) {
+					System.out.println("Choosing by teachables!");
+					finalSt = st;
+				}else {
+					//System.out.println("Choosing randomly!");
+					//finalSt = chooseRandomly(stArray);
+				}
+				
+			
+				
+			}
+			return finalSt;
+			
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	// Determine if there is a scheduling conflict between a particular subTeacher's bookings
 	// and a new time slot:
@@ -50,6 +101,19 @@ public class Sorter {
     }
 
 
+    
+	// Helper method to convert string (of teachables, for example) into an arraylist of strings:
+    public ArrayList<String> parseString(String stringIn){	
+    	ArrayList<String> stringList = new ArrayList<String>();		
+    	Scanner scan = new Scanner(stringIn);
+    	while(scan.hasNext())  {      
+    		stringList.add(scan.nextLine());		
+    	}
+    	scan.close();	
+        // for each string listed in string, append it to strings arraylist: 		
+        return stringList; 	
+    }
+		
 
     //public Date parseDate(String dateIn, String timeIn) {
     public String parseDate(String dateIn, String timeIn) {

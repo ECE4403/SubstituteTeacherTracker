@@ -31,22 +31,14 @@ public class Teacher {
 	
 	
 	// Helper method to convert string (of teachables, for example) into an arraylist of strings:
-		public ArrayList<String> parseString(String stringIn){
-			ArrayList<String> strings = new ArrayList<String>();
-			
-			// for each string listed in string, append it to strings arraylist:
+	 		public ArrayList<String> parseString(String stringIn){
+	 			ArrayList<String> strings = new ArrayList<String>();
+	 			
+	 			// for each string listed in string, append it to strings arraylist:
 
-			return strings;
-		}
-		
-		// Helper method to convert string (of unavailabilities, for example) into an arraylist of dates:
-		public ArrayList<String> parseDate(String datesIn){
-			ArrayList<String> dates = new ArrayList<String>();
-			
-			// for each date listed in string, append it to dates arraylist:
-			
-			return dates;
-		}
+	 			return strings;
+	 		}
+	 		
 		
 		
 		
